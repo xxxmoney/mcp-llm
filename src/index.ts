@@ -14,7 +14,7 @@ server.get("/", async (request, reply) => {
 	return "I am alive!";
 });
 
-server.get("/sse", async (request, reply) => {
+server.get("/mcp", async (request, reply) => {
 	reply.hijack(); // Handle response by MCP
 
 	console.log("Establishing SSE connection...");
