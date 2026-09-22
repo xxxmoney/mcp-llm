@@ -14,7 +14,10 @@
 	"license": "ISC",
 	"type": "module",
 	"dependencies": {
-		"fastify": "^5.12.5"
+		"@modelcontextprotocol/sdk": "^1.30.0",
+		"@modelcontextprotocol/server": "^2.0.0",
+		"fastify": "^5.12.5",
+		"zod": "^4.6.5"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.14",
