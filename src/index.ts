@@ -1,20 +1,29 @@
+import type { ZodTypeProvider } from "@fastify/type-provider-zod";
+import {
+	serializerCompiler,
+	validatorCompiler,
+} from "@fastify/type-provider-zod";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse";
-import fastify, { type RouteGenericInterface } from "fastify";
+import fastify from "fastify";
+import { z } from "zod";
 import mcp from "./mcp.ts";
 
-const server = fastify();
 const connections = new Map<string, SSEServerTransport>();
 
+const server = fastify();
+server.setValidatorCompiler(validatorCompiler);
+server.setSerializerCompiler(serializerCompiler);
+
 server.removeAllContentTypeParsers();
-server.addContentTypeParser("*", (req, payload, done) => {
+server.addContentTypeParser("*", (_, payload, done) => {
 	done(null, payload); // Handle raw
 });
 
-server.get("/", async (request, reply) => {
+server.get("/", async () => {
 	return "I am alive!";
 });
 
-server.get("/mcp", async (request, reply) => {
+server.get("/mcp", async (_, reply) => {
 	reply.hijack(); // Handle response by connection (left open for SSE)
 
 	console.log("Establishing new connection...");
@@ -34,24 +43,29 @@ server.get("/mcp", async (request, reply) => {
 	});
 });
 
-interface Messages extends RouteGenericInterface {
-	Querystring: {
-		sessionId: string;
-	};
-}
-server.post<Messages>("/messages", async (request, reply) => {
-	reply.hijack(); // Handle response by connection
+server.withTypeProvider<ZodTypeProvider>().post(
+	"/messages",
+	{
+		schema: {
+			querystring: z.object({
+				sessionId: z.string(),
+			}),
+		},
+	},
+	async (request, reply) => {
+		reply.hijack(); // Handle response by connection
 
-	const sessionId = request.query.sessionId;
+		const sessionId = request.query.sessionId;
 
-	const connection = connections.get(sessionId);
-	if (!connection) {
-		console.warn(`No active connection for: '${sessionId}'`);
-		return reply.code(400).send("No active connection");
-	}
+		const connection = connections.get(sessionId);
+		if (!connection) {
+			console.warn(`No active connection for: '${sessionId}'`);
+			return reply.raw.writeHead(400).end("No active connection");
+		}
 
-	await connection.handlePostMessage(request.raw, reply.raw);
-});
+		await connection.handlePostMessage(request.raw, reply.raw);
+	},
+);
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 666;
 server.listen({ port: port }, (err, address) => {
