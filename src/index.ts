@@ -6,7 +6,8 @@ server.get("/", async (request, reply) => {
 	return "I am alive!";
 });
 
-server.listen({ port: 666 }, (err, address) => {
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 666;
+server.listen({ port: port }, (err, address) => {
 	if (err) {
 		console.error(err);
 		process.exit(1);
