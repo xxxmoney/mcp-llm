@@ -1,9 +1,9 @@
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse";
-import fastify from "fastify";
+import fastify, { type RouteGenericInterface } from "fastify";
 import mcp from "./mcp.ts";
 
 const server = fastify();
-let transport: SSEServerTransport | null = null;
+const connections = new Map<string, SSEServerTransport>();
 
 server.removeAllContentTypeParsers();
 server.addContentTypeParser("*", (req, payload, done) => {
@@ -15,23 +15,42 @@ server.get("/", async (request, reply) => {
 });
 
 server.get("/mcp", async (request, reply) => {
-	reply.hijack(); // Handle response by MCP
+	reply.hijack(); // Handle response by connection (left open for SSE)
 
-	console.log("Establishing SSE connection...");
+	console.log("Establishing new connection...");
+	const connection = new SSEServerTransport("/messages", reply.raw);
+	await mcp.connect(connection);
+	console.log(`Connection established: '${connection.sessionId}'`);
 
-	transport = new SSEServerTransport("/messages", reply.raw);
-	await mcp.connect(transport);
+	connections.set(connection.sessionId, connection);
+
+	reply.raw.on("close", async () => {
+		if (connections.has(connection.sessionId)) {
+			console.log(`Closing connection: '${connection.sessionId}'...`);
+			await connection.close();
+			connections.delete(connection.sessionId);
+			console.log(`Closed connection: '${connection.sessionId}'`);
+		}
+	});
 });
 
-server.post("/messages", async (request, reply) => {
-	reply.hijack(); // Handle response by MCP
+interface Messages extends RouteGenericInterface {
+	Querystring: {
+		sessionId: string;
+	};
+}
+server.post<Messages>("/messages", async (request, reply) => {
+	reply.hijack(); // Handle response by connection
 
-	if (!transport) {
-		console.warn("No active connection yet!");
+	const sessionId = request.query.sessionId;
+
+	const connection = connections.get(sessionId);
+	if (!connection) {
+		console.warn(`No active connection for: '${sessionId}'`);
 		return reply.code(400).send("No active connection");
 	}
 
-	await transport.handlePostMessage(request.raw, reply.raw);
+	await connection.handlePostMessage(request.raw, reply.raw);
 });
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 666;
