@@ -11,12 +11,15 @@ import mcp from "./mcp.ts";
 const connections = new Map<string, SSEServerTransport>();
 
 const server = fastify();
+
+// Use Zod validation
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
 
+// Let MCP process raw request content
 server.removeAllContentTypeParsers();
 server.addContentTypeParser("*", (_, payload, done) => {
-	done(null, payload); // Handle raw
+	done(null, payload);
 });
 
 server.get("/", async () => {
@@ -24,7 +27,7 @@ server.get("/", async () => {
 });
 
 server.get("/mcp", async (_, reply) => {
-	reply.hijack(); // Handle response by connection (left open for SSE)
+	reply.hijack(); // Handle response by MCP connection
 
 	console.log("Establishing new connection...");
 	const connection = new SSEServerTransport("/messages", reply.raw);
