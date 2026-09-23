@@ -22,10 +22,12 @@ server.addContentTypeParser("*", (_, payload, done) => {
 	done(null, payload);
 });
 
+// Handle health check
 server.get("/", async () => {
 	return "I am alive!";
 });
 
+// Handle initiate SSE
 server.get("/mcp", async (_, reply) => {
 	reply.hijack(); // Handle response by MCP connection
 
@@ -46,6 +48,7 @@ server.get("/mcp", async (_, reply) => {
 	});
 });
 
+// Handle POST message to SSE connection
 server.withTypeProvider<ZodTypeProvider>().post(
 	"/messages",
 	{
