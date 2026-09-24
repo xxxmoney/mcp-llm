@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import { createMcpFastifyApp } from "@modelcontextprotocol/fastify";
 import { NodeStreamableHTTPServerTransport } from "@modelcontextprotocol/node";
 import { isInitializeRequest } from "@modelcontextprotocol/server";
+import { DEFAULT_PORT, SESSION_ID_HEADER } from "./constants.ts";
 import { ENV } from "./env.ts";
 import mcp from "./mcp.ts";
 
@@ -24,7 +25,7 @@ server.get("/", async () => {
 
 // Handle HTTP streaming MCP requests
 server.all("/mcp", async (request, reply) => {
-	const sessionId = request.headers["mcp-session-id"] as string | undefined;
+	const sessionId = request.headers[SESSION_ID_HEADER] as string | undefined;
 
 	if (!sessionId && !isInitializeRequest(request.body)) {
 		console.warn(`Session id not specified in headers`);
@@ -32,7 +33,7 @@ server.all("/mcp", async (request, reply) => {
 			jsonrpc: "2.0",
 			error: {
 				code: -32_000,
-				message: "Session id not specified in headers as 'mcp-session-id'",
+				message: `Session id not specified in headers as '${SESSION_ID_HEADER}'`,
 			},
 			id: null,
 		});
@@ -65,7 +66,7 @@ server.all("/mcp", async (request, reply) => {
 	await connection.handleRequest(request.raw, reply.raw, request.body);
 });
 
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 666;
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_PORT;
 server.listen({ port: port }, (err, address) => {
 	if (err) {
 		console.error(err);
