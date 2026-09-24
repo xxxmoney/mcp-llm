@@ -6,6 +6,10 @@ const mcp = new McpServer({
 	version: "1.0.0",
 });
 
+mcp.server.onerror = (error) => {
+	console.error("MCP Server Error:", error);
+};
+
 registerGenerateTool(mcp);
 
 export default mcp;

@@ -8,7 +8,7 @@ const envSchema = z.object({
 		.string()
 		.refine((url) => url.startsWith("http://") || url.startsWith("https://")),
 	TOKEN: z.string().optional(),
-	MODEL: z.string().refine((model) => model.startsWith("models/")),
+	MODEL: z.string(),
 });
 
 type Env = z.infer<typeof envSchema>;
