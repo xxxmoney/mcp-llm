@@ -1,5 +1,6 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
+import { McpServer } from "@modelcontextprotocol/server";
 import { registerGenerateTool } from "./tools/generate.tool.js";
+import { registerTestTool } from "./tools/test.tool.js";
 
 const mcp = new McpServer({
 	name: "mcp-llm",
@@ -10,6 +11,7 @@ mcp.server.onerror = (error) => {
 	console.error("MCP Server Error:", error);
 };
 
+registerTestTool(mcp);
 registerGenerateTool(mcp);
 
 export default mcp;

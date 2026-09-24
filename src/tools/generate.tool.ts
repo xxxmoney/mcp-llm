@@ -1,4 +1,4 @@
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
+import type { McpServer } from "@modelcontextprotocol/server";
 import OpenAI from "openai";
 import { z } from "zod";
 import { ENV } from "../env.ts";
