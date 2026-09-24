@@ -14,6 +14,10 @@ console.log(`Loaded env: ${JSON.stringify(ENV)}`);
 const connections = new Map<string, SSEServerTransport>();
 
 const server = fastify();
+server.addHook("onRequest", (request, _, done) => {
+	console.log(`[HTTP] ${request.method} ${request.url}`);
+	done();
+});
 
 // Use Zod validation
 server.setValidatorCompiler(validatorCompiler);
@@ -37,7 +41,7 @@ server.get("/mcp", async (_, reply) => {
 	console.log("Establishing new connection...");
 	const connection = new SSEServerTransport("/messages", reply.raw);
 	await mcp.connect(connection);
-	console.log(`:Established new connection '${connection.sessionId}'`);
+	console.log(`Established new connection '${connection.sessionId}'`);
 
 	connections.set(connection.sessionId, connection);
 

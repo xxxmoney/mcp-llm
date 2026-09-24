@@ -7,7 +7,7 @@ export function registerGenerateTool(mcp: McpServer) {
 	mcp.registerTool(
 		"generate",
 		{
-			description: "Generates output",
+			description: "Generates output using LLM",
 			inputSchema: z.object({
 				instructions: z.string().optional(),
 				input: z.string(),
