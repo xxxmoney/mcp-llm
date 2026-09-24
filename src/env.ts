@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 import { z } from "zod";
 
-const value = config();
+config(); // Load .env
 
 const envSchema = z.object({
 	BASE_URL: z
@@ -13,4 +13,4 @@ const envSchema = z.object({
 
 type Env = z.infer<typeof envSchema>;
 
-export const ENV: Env = envSchema.parse(value.parsed);
+export const ENV: Env = envSchema.parse(process.env); // Will be supplied either from .env or injected from docker

@@ -1,0 +1,19 @@
+
+name: MCP LLM
+
+services:
+  mcp-llm:
+    build: "."
+    restart: "unless-stopped" # Keep running unless manually stopped
+    command: "npm run start"
+    ports:
+        - "666:666"
+    environment:
+      - "HOST=0.0.0.0"
+      - "PORT=666"
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Preserve host access to local machine
+    dns:
+      - "8.8.8.8" # Fix windows issue
+    env_file:
+      - ".env"

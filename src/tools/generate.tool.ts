@@ -3,6 +3,11 @@ import OpenAI from "openai";
 import { z } from "zod";
 import { ENV } from "../env.ts";
 
+const client = new OpenAI({
+	baseURL: ENV.BASE_URL,
+	apiKey: ENV.TOKEN,
+});
+
 export function registerGenerateTool(mcp: McpServer) {
 	mcp.registerTool(
 		"generate",
@@ -19,11 +24,6 @@ export function registerGenerateTool(mcp: McpServer) {
 				console.log(
 					`['${extra.sessionId}'] session generating output for input: '${value.input}', instructions: '${instructions}'...`,
 				);
-
-				const client = new OpenAI({
-					baseURL: ENV.BASE_URL,
-					apiKey: ENV.TOKEN,
-				});
 
 				const response = await client.chat.completions.create({
 					model: ENV.MODEL,
