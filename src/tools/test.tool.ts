@@ -12,7 +12,7 @@ export function registerTestTool(mcp: McpServer) {
 		},
 		async ({ value }, extra) => {
 			console.log(
-				`Session '${extra.sessionId}' received test message: '${value}'`,
+				`['${extra.sessionId}'] session received test message: '${value}'`,
 			);
 			return {
 				content: [{ type: "text", text: `Value: '${value}'` }],

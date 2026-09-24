@@ -17,7 +17,7 @@ export function registerGenerateTool(mcp: McpServer) {
 			try {
 				const instructions = value.instructions ?? "You are an assistant";
 				console.log(
-					`Session '${extra.sessionId}' generating output for input: '${value.input}', instructions: '${instructions}'...`,
+					`['${extra.sessionId}'] session generating output for input: '${value.input}', instructions: '${instructions}'...`,
 				);
 
 				const client = new OpenAI({
@@ -38,7 +38,7 @@ export function registerGenerateTool(mcp: McpServer) {
 				const output = response.choices[0]?.message?.content;
 
 				console.log(
-					`Session '${extra.sessionId}' generated output: '${output}'`,
+					`['${extra.sessionId}'] session generated output: '${output}'`,
 				);
 
 				return {
@@ -46,7 +46,7 @@ export function registerGenerateTool(mcp: McpServer) {
 				};
 			} catch (error) {
 				console.error(
-					`Session '${extra.sessionId}' failed to generate output:`,
+					`['${extra.sessionId}'] session failed to generate output:`,
 					error instanceof Error ? error.message : error,
 				);
 

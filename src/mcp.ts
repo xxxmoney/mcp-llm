@@ -8,7 +8,7 @@ const mcp = new McpServer({
 });
 
 mcp.server.onerror = (error) => {
-	console.error("MCP Server Error:", error);
+	console.error("MCP error:", error);
 };
 
 registerTestTool(mcp);
