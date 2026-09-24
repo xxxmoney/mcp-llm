@@ -66,8 +66,9 @@ server.all("/mcp", async (request, reply) => {
 	await connection.handleRequest(request.raw, reply.raw, request.body);
 });
 
+const host = process.env.HOST || "localhost";
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_PORT;
-server.listen({ port: port }, (err, address) => {
+server.listen({ host: host, port: port }, (err, address) => {
 	if (err) {
 		console.error(err);
 		process.exit(1);
