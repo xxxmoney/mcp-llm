@@ -3,10 +3,15 @@ name: MCP LLM
 
 services:
   mcp-llm:
-    build: "."
-    command: "npm run start"
+    build:
+      - context: "."
+      - target: "build"
+    command: "npm run dev"
     ports:
         - "666:666"
+    volumes:
+        - ".:/app"
+        - "/app/node_modules"
     environment:
       - "HOST=0.0.0.0"
       - "PORT=666"
@@ -14,5 +19,3 @@ services:
       - "host.docker.internal:host-gateway" # Preserve host access to local machine
     dns:
       - "8.8.8.8" # Fix windows issue
-    env_file:
-      - ".env"
