@@ -6,7 +6,10 @@ import {
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse";
 import fastify from "fastify";
 import { z } from "zod";
+import { ENV } from "./env.ts";
 import mcp from "./mcp.ts";
+
+console.log(`Loaded env: ${JSON.stringify(ENV)}`);
 
 const connections = new Map<string, SSEServerTransport>();
 
@@ -29,12 +32,12 @@ server.get("/", async () => {
 
 // Handle initiate SSE
 server.get("/mcp", async (_, reply) => {
-	reply.hijack(); // Handle response by MCP connection
+	reply.hijack(); // Back off fastify
 
 	console.log("Establishing new connection...");
 	const connection = new SSEServerTransport("/messages", reply.raw);
 	await mcp.connect(connection);
-	console.log(`Connection established: '${connection.sessionId}'`);
+	console.log(`:Established new connection '${connection.sessionId}'`);
 
 	connections.set(connection.sessionId, connection);
 
@@ -59,7 +62,7 @@ server.withTypeProvider<ZodTypeProvider>().post(
 		},
 	},
 	async (request, reply) => {
-		reply.hijack(); // Handle response by connection
+		reply.hijack(); // Back off fastify
 
 		const sessionId = request.query.sessionId;
 

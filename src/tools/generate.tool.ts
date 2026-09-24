@@ -11,7 +11,7 @@ export function registerGenerateTool(mcp: McpServer) {
 			}),
 		},
 		async ({ value }) => {
-			console.log("Got input:", value);
+			console.log("Generate input:", value);
 
 			return {
 				content: [{ type: "text", text: `You said: '${value}'` }],
