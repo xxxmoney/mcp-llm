@@ -23,7 +23,7 @@ server.get("/", async () => {
 });
 
 // Handle HTTP streaming MCP requests
-server.post("/mcp", async (request, reply) => {
+server.all("/mcp", async (request, reply) => {
 	const sessionId = request.headers["mcp-session-id"] as string | undefined;
 
 	if (!sessionId && !isInitializeRequest(request.body)) {
