@@ -4,7 +4,7 @@ import { z } from "zod";
 const value = config();
 
 const envSchema = z.object({
-	URL: z
+	BASE_URL: z
 		.string()
 		.refine((url) => url.startsWith("http://") || url.startsWith("https://")),
 	TOKEN: z.string().optional(),

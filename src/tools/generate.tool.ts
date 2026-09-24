@@ -21,7 +21,7 @@ export function registerGenerateTool(mcp: McpServer) {
 				);
 
 				const client = new OpenAI({
-					baseURL: ENV.URL,
+					baseURL: ENV.BASE_URL,
 					apiKey: ENV.TOKEN,
 				});
 
