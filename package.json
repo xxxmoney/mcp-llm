@@ -11,7 +11,9 @@
 		"docker-up": "docker compose --env-file .env up --build -d",
 		"docker-down": "docker compose down",
 		"docker-up:dev": "docker compose --env-file .env.dev -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d",
-		"docker-down:dev": "docker compose -f docker-compose.yaml -f docker-compose.dev.yaml down"
+		"docker-down:dev": "docker compose -f docker-compose.yaml -f docker-compose.dev.yaml down",
+		"inspect": "npx @modelcontextprotocol/inspector http://localhost:666/mcp",
+		"inspect:dev": "npx @modelcontextprotocol/inspector http://localhost:667/mcp"
 	},
 	"keywords": [],
 	"author": "",
