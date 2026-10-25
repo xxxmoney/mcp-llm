@@ -19,3 +19,5 @@ services:
       - "host.docker.internal:host-gateway" # Preserve host access to local machine
     dns:
       - "8.8.8.8" # Fix windows issue
+    env_file:
+      - ".env.dev"
