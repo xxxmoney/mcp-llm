@@ -1,10 +1,25 @@
+import fs from "node:fs";
+import { format } from "node:util";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import mcp from "./mcp.ts";
 
-// Redirect log to error to avoid stdout pollution
-console.debug = console.error;
-console.info = console.error;
-console.log = console.error;
+let log = console.error;
+
+// Check docker log file exists
+if (fs.existsSync("/proc/1/fd/1")) {
+	try {
+		const dockerLog = fs.createWriteStream("/proc/1/fd/1", { flags: "a" });
+		dockerLog.on("error", () => {}); // Prevent crash if pipe closes
+		log = (...args: unknown[]) => dockerLog.write(`${format(...args)}\n`);
+	} catch {
+		// Fallback to stderr
+	}
+}
+
+console.debug = log;
+console.log = log;
+console.info = log;
+console.warn = log;
 
 const transport = new StdioServerTransport();
 await mcp.connect(transport);
