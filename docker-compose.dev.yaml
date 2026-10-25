@@ -4,6 +4,7 @@ name: MCP LLM DEV
 services:
   mcp-llm:
     image: "mcp-llm:dev"
+    container_name: "mcp-llm-dev"
     build:
       context: "."
       target: "build"

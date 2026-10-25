@@ -9,6 +9,8 @@ const envSchema = z.object({
 		.refine((url) => url.startsWith("http://") || url.startsWith("https://")),
 	TOKEN: z.string().optional(),
 	MODEL: z.string(),
+	PORT: z.number(),
+	EXTERNAL_PORT: z.number(),
 });
 
 type Env = z.infer<typeof envSchema>;

@@ -5,15 +5,17 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
-		"build": "tsup src/index.ts --format esm",
+		"build": "tsup src/index.ts src/stdio.ts --format esm",
 		"start": "node dist/index.js",
 		"lint": "biome check --write",
 		"docker-up": "docker compose --env-file .env up --build -d",
 		"docker-down": "docker compose down",
 		"docker-up:dev": "docker compose --env-file .env.dev -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d",
 		"docker-down:dev": "docker compose -f docker-compose.yaml -f docker-compose.dev.yaml down",
-		"inspect": "npx @modelcontextprotocol/inspector http://localhost:666/mcp",
-		"inspect:dev": "npx @modelcontextprotocol/inspector http://localhost:667/mcp"
+		"inspect-http": "dotenv -e .env -- cross-var npx @modelcontextprotocol/inspector http://localhost:%EXTERNAL_PORT%/mcp",
+		"inspect-http:dev": "dotenv -e .env.dev -- cross-var npx @modelcontextprotocol/inspector http://localhost:%EXTERNAL_PORT%/mcp",
+		"inspect-stdio": "npx @modelcontextprotocol/inspector docker exec -i mcp-llm-prod npx tsx src/stdio.ts",
+		"inspect-stdio:dev": "npx @modelcontextprotocol/inspector docker exec -i mcp-llm-dev npx tsx src/stdio.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -33,6 +35,8 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.5.14",
 		"@types/node": "^26.6.2",
+		"cross-var": "^1.1.0",
+		"dotenv-cli": "^11.0.0",
 		"tsup": "^8.5.1",
 		"tsx": "^4.23.15",
 		"typescript": "^7.0.2"
