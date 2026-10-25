@@ -8,10 +8,9 @@ services:
     restart: "unless-stopped" # Keep running unless manually stopped
     command: "npm run start"
     ports:
-        - "${EXTERNAL_PORT:-${PORT}}:${PORT}" # External port env var EXTERNAL_PORT, default to PORT : internal port env var PORT
+        - "${EXTERNAL_PORT}:${PORT}"
     environment:
       - "HOST=0.0.0.0"
-      - "PORT=666"
     extra_hosts:
       - "host.docker.internal:host-gateway" # Preserve host access to local machine
     dns:

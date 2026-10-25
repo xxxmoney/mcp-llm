@@ -35,9 +35,7 @@
   - `openai` library to talk with OpenAI API standard
   - And other...
 - Running with Docker:
-  - `docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d`
-- You can also run with custom port
-  - `docker compose -e "EXTERNAL_PORT=3333" -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d`
+  - `docker compose --env-file .env.dev -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d`
 - Running on your machine:
   - [Node](https://nodejs.org/en) installed
   - `npm install`
