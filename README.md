@@ -34,6 +34,7 @@
   - `fastify` and `modelcontextprotocol` libraries to handle MCP HTTP Streaming
   - `openai` library to talk with OpenAI API standard
   - And other...
+- Copy `.env.dev.example` to `.env.dev` and fill in your base url, token and model (you can also change external port if preferred)
 - Running with Docker:
   - `docker compose --env-file .env.dev -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d`
 - Running on your machine:
