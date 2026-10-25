@@ -9,13 +9,13 @@ services:
       target: "build"
     command: "npm run dev"
     ports:
-        - "666:666"
+        - "${EXTERNAL_PORT:-${PORT}}:${PORT}" # External port env var EXTERNAL_PORT, default to PORT : internal port env var PORT
     volumes:
         - ".:/app"
         - "/app/node_modules"
     environment:
       - "HOST=0.0.0.0"
-      - "PORT=666"
+      - "PORT=667"
     extra_hosts:
       - "host.docker.internal:host-gateway" # Preserve host access to local machine
     dns:

@@ -36,13 +36,15 @@
   - And other...
 - Running with Docker:
   - `docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d`
+- You can also run with custom port
+  - `docker compose -e "EXTERNAL_PORT=3333" -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d`
 - Running on your machine:
   - [Node](https://nodejs.org/en) installed
   - `npm install`
   - `npm run dev`
 - Testing
   - `npx @modelcontextprotocol/inspector` (Needs [Node](https://nodejs.org/en) installed)
-  - Click `Add Server` -> `Add manually` -> `Select transport: streamable-http` and enter URL `http://localhost:666/mcp`
+  - Click `Add Server` -> `Add manually` -> `Select transport: streamable-http` and enter URL `http://localhost:667/mcp`
   - You can now test the connection, and in the `Tools` tab test the tools
 - Side note this cool lil' example for the HTTP Streaming:
   - [Link](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/examples/sse-polling/server.ts)

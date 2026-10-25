@@ -8,7 +8,7 @@ services:
     restart: "unless-stopped" # Keep running unless manually stopped
     command: "npm run start"
     ports:
-        - "666:666"
+        - "${EXTERNAL_PORT:-${PORT}}:${PORT}" # External port env var EXTERNAL_PORT, default to PORT : internal port env var PORT
     environment:
       - "HOST=0.0.0.0"
       - "PORT=666"
