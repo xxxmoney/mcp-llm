@@ -3,11 +3,9 @@ import cors from "@fastify/cors";
 import { createMcpFastifyApp } from "@modelcontextprotocol/fastify";
 import { NodeStreamableHTTPServerTransport } from "@modelcontextprotocol/node";
 import { isInitializeRequest } from "@modelcontextprotocol/server";
-import { DEFAULT_PORT, SESSION_ID_HEADER } from "./constants.ts";
+import { SESSION_ID_HEADER } from "./constants.ts";
 import { ENV } from "./env.ts";
 import mcp from "./mcp.ts";
-
-console.log(`Loaded env: ${JSON.stringify(ENV)}`);
 
 const connections = new Map<string, NodeStreamableHTTPServerTransport>();
 
@@ -66,9 +64,7 @@ server.all("/mcp", async (request, reply) => {
 	await connection.handleRequest(request.raw, reply.raw, request.body);
 });
 
-const host = process.env.HOST || "localhost";
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_PORT;
-server.listen({ host: host, port: port }, (err, address) => {
+server.listen({ host: ENV.HOST, port: ENV.PORT }, (err, address) => {
 	if (err) {
 		console.error(err);
 		process.exit(1);

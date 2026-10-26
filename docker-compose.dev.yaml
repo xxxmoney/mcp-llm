@@ -1,21 +1,25 @@
 
-name: MCP LLM
+name: MCP LLM DEV
 
 services:
   mcp-llm:
+    image: "mcp-llm:dev"
+    container_name: "mcp-llm-dev"
     build:
       context: "."
       target: "build"
     command: "npm run dev"
     ports:
-        - "666:666"
+        - "${EXTERNAL_PORT}:${PORT}"
     volumes:
         - ".:/app"
         - "/app/node_modules"
     environment:
       - "HOST=0.0.0.0"
-      - "PORT=666"
+      - "CHOKIDAR_USEPOLLING=true"
     extra_hosts:
       - "host.docker.internal:host-gateway" # Preserve host access to local machine
     dns:
       - "8.8.8.8" # Fix windows issue
+    env_file:
+      - ".env.dev"

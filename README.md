@@ -4,6 +4,7 @@
 ## Let the AI orchestration begin!
 - Simple MCP server lets your Agentic IDE/Workspace use other LLMs
 - Through OpenAI API standard - so local and remote are supported
+- Supports SSE and STDIO
 
 ## Setting up
 - Clone this repo with `git clone https://github.com/xxxmoney/mcp-llm`
@@ -11,17 +12,31 @@
 - Get [Docker](https://www.docker.com)
 - Run `docker compose up --build -d` to start the MCP server
 - Add MCP server setting to your Agentic IDE/Workspace config file `mpc.json`
-  - ```
-    { 
-      "mcpServers": { 
-        ...
-        "llm": { 
-          "serverUrl": "http://localhost:666/mcp" 
+  - SSE
+    - ```
+      { 
+        "mcpServers": { 
+          ...
+          "llm": { 
+            "serverUrl": "http://localhost:666/mcp" 
+          } 
+          ...
         } 
-        ...
-      } 
-    }
-    ```
+      }
+      ```
+  - STDIO
+    - ```
+      { 
+        "mcpServers": { 
+          ...
+          "llm": { 
+            "command": "docker",
+            "args": ["exec", "-i", "mcp-llm-prod", "node", "dist/stdio.js"]
+          } 
+          ...
+        } 
+      }
+      ```
 
 ## Usage
 - After [setting up](#setting-up), make sure Agentic IDE/Workspace can use the tool
@@ -34,16 +49,15 @@
   - `fastify` and `modelcontextprotocol` libraries to handle MCP HTTP Streaming
   - `openai` library to talk with OpenAI API standard
   - And other...
-- Running with Docker:
-  - `docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up --build -d`
+- Copy `.env.dev.example` to `.env.dev` and fill in your base url, token and model (you can also change external port if preferred)
+- Running with Docker, inspecting, etc
+  - Check the `package.json` scripts for more details
 - Running on your machine:
   - [Node](https://nodejs.org/en) installed
   - `npm install`
   - `npm run dev`
 - Testing
-  - `npx @modelcontextprotocol/inspector` (Needs [Node](https://nodejs.org/en) installed)
-  - Click `Add Server` -> `Add manually` -> `Select transport: streamable-http` and enter URL `http://localhost:666/mcp`
-  - You can now test the connection, and in the `Tools` tab test the tools
-- Side note this cool lil' example for the HTTP Streaming:
+  - Scripts in `package.json` - `inspect-http:dev` and `inspect-stdio:dev`
+- Side note this cool lil' example I used as reference for the HTTP Streaming:
   - [Link](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/examples/sse-polling/server.ts)
 

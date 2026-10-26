@@ -1,19 +1,20 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
+import { registerTool } from "./helper.js";
 
 export function registerTestTool(mcp: McpServer) {
-	mcp.registerTool(
-		"test",
+	return registerTool(
+		mcp,
 		{
+			title: "test",
 			description: "Test tool that responds with the provided value",
-			inputSchema: z.object({
+			valueSchema: z.object({
 				value: z.string(),
 			}),
 		},
-		async ({ value }, extra) => {
-			console.log(
-				`['${extra.sessionId}'] session received test message: '${value}'`,
-			);
+		({ value }, { log }) => {
+			log(`Received test message: '${value}'`);
+
 			return {
 				content: [{ type: "text", text: `Value: '${value}'` }],
 			};
