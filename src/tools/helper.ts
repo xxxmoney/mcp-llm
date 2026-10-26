@@ -29,10 +29,10 @@ export function registerTool<T extends z.ZodRawShape>(
 		},
 		(value, extra) => {
 			const log = (message: string) => {
-				console.log(`[${extra.sessionId}] ${message}`);
+				console.log(`[${extra.sessionId ?? "stdio"}] ${message}`);
 			};
 			const error = (message: string) => {
-				console.error(`[${extra.sessionId}] ${message}`);
+				console.error(`[${extra.sessionId ?? "stdio"}] ${message}`);
 			};
 
 			try {
