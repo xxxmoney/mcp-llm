@@ -1,9 +1,9 @@
 import type { McpServer, ServerContext } from "@modelcontextprotocol/server";
 import type { z } from "zod";
 
-type HandlerOutput = Promise<{
+type HandlerOutput = {
 	content: Array<{ type: string; text: string }>;
-}>;
+};
 
 export function registerTool<T extends z.ZodRawShape>(
 	mcp: McpServer,
@@ -14,10 +14,12 @@ export function registerTool<T extends z.ZodRawShape>(
 	},
 	handler: (
 		value: z.infer<z.ZodObject<T>>,
-		log: (message: string) => void,
-		error: (message: string) => void,
-		extra: ServerContext,
-	) => HandlerOutput,
+		extra: {
+			log: (message: string) => void;
+			error: (message: string) => void;
+			context: ServerContext;
+		},
+	) => Promise<HandlerOutput>,
 ) {
 	mcp.registerTool(
 		config.title,
@@ -34,7 +36,11 @@ export function registerTool<T extends z.ZodRawShape>(
 			};
 
 			try {
-				return handler(value, log, error, extra);
+				return handler(value, {
+					log: log,
+					error: error,
+					context: extra,
+				});
 			} catch (err) {
 				error(`Failed to execute tool '${config.title}': ${err}`);
 			}
