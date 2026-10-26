@@ -12,7 +12,7 @@ export function registerTestTool(mcp: McpServer) {
 				value: z.string(),
 			}),
 		},
-		async ({ value }, { log }) => {
+		({ value }, { log }) => {
 			log(`Received test message: '${value}'`);
 
 			return {

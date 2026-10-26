@@ -19,7 +19,7 @@ export function registerTool<T extends z.ZodRawShape>(
 			error: (message: string) => void;
 			context: ServerContext;
 		},
-	) => Promise<HandlerOutput>,
+	) => HandlerOutput | Promise<HandlerOutput>,
 ) {
 	mcp.registerTool(
 		config.title,
@@ -42,7 +42,9 @@ export function registerTool<T extends z.ZodRawShape>(
 					context: extra,
 				});
 			} catch (err) {
-				error(`Failed to execute tool '${config.title}': ${err}`);
+				error(
+					`Failed to execute tool '${config.title}': ${err instanceof Error ? err.message : err}`,
+				);
 			}
 		},
 	);
