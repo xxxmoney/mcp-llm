@@ -7,8 +7,6 @@ import { DEFAULT_PORT, SESSION_ID_HEADER } from "./constants.ts";
 import { ENV } from "./env.ts";
 import mcp from "./mcp.ts";
 
-console.log(`Loaded env: ${JSON.stringify(ENV)}`);
-
 const connections = new Map<string, NodeStreamableHTTPServerTransport>();
 
 const server = createMcpFastifyApp();

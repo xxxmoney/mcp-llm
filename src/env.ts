@@ -1,8 +1,11 @@
 import { config } from "dotenv";
 import { z } from "zod";
 
-const cfg = config(); // Load .env
-console.debug("Loaded .env config: ", JSON.stringify(cfg));
+const cfg = config().parsed; // Load .env
+console.debug(
+	"Loaded raw .env config: ",
+	JSON.stringify({ ...cfg, TOKEN: "***" }),
+);
 
 const envSchema = z.object({
 	BASE_URL: z
@@ -17,4 +20,7 @@ const envSchema = z.object({
 type Env = z.infer<typeof envSchema>;
 
 export const ENV: Env = envSchema.parse(process.env); // Will be supplied either from .env or injected from docker
-console.debug("Parsed environment variables: ", JSON.stringify(ENV));
+console.debug(
+	"Validated .env config: ",
+	JSON.stringify({ ...ENV, TOKEN: "***" }),
+);
