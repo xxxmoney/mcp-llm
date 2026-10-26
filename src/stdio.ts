@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { format } from "node:util";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
-import mcp from "./mcp.ts";
+import { createMcpServer } from "./mcp.ts";
 
 let log = console.error;
 
@@ -23,4 +23,5 @@ console.warn = log;
 console.error = log;
 
 const transport = new StdioServerTransport();
+const mcp = createMcpServer();
 await mcp.connect(transport);
