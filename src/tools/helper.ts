@@ -10,7 +10,7 @@ export function registerTool<T extends z.ZodRawShape>(
 	config: {
 		title: string;
 		description: string;
-		inputSchema: z.ZodObject<T>;
+		valueSchema: z.ZodObject<T>;
 	},
 	handler: (
 		value: z.infer<z.ZodObject<T>>,
@@ -25,7 +25,7 @@ export function registerTool<T extends z.ZodRawShape>(
 		config.title,
 		{
 			description: config.description,
-			inputSchema: config.inputSchema,
+			inputSchema: config.valueSchema,
 		},
 		(value, extra) => {
 			const log = (message: string) => {

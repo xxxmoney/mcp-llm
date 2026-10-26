@@ -15,7 +15,7 @@ export function registerGenerateTool(mcp: McpServer) {
 		{
 			title: "generate",
 			description: "Generates output using LLM",
-			inputSchema: z.object({
+			valueSchema: z.object({
 				instructions: z.string().optional(),
 				input: z.string(),
 			}),

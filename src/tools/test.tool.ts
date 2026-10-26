@@ -8,7 +8,7 @@ export function registerTestTool(mcp: McpServer) {
 		{
 			title: "test",
 			description: "Test tool that responds with the provided value",
-			inputSchema: z.object({
+			valueSchema: z.object({
 				value: z.string(),
 			}),
 		},
