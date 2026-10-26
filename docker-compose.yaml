@@ -10,8 +10,6 @@ services:
     command: "npm run start"
     ports:
         - "${EXTERNAL_PORT}:${PORT}"
-    environment:
-      - "HOST=0.0.0.0"
     extra_hosts:
       - "host.docker.internal:host-gateway" # Preserve host access to local machine
     dns:
