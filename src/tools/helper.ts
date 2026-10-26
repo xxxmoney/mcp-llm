@@ -27,7 +27,7 @@ export function registerTool<T extends z.ZodRawShape>(
 			description: config.description,
 			inputSchema: config.valueSchema,
 		},
-		(value, extra) => {
+		async (value, extra) => {
 			const log = (message: string) => {
 				console.log(`[${extra.sessionId ?? "stdio"}] ${message}`);
 			};
@@ -36,7 +36,7 @@ export function registerTool<T extends z.ZodRawShape>(
 			};
 
 			try {
-				return handler(value, {
+				return await handler(value, {
 					log: log,
 					error: error,
 					context: extra,
@@ -45,6 +45,8 @@ export function registerTool<T extends z.ZodRawShape>(
 				error(
 					`Failed to execute tool '${config.title}': ${err instanceof Error ? err.message : err}`,
 				);
+
+				throw err;
 			}
 		},
 	);
