@@ -5,7 +5,7 @@ import { NodeStreamableHTTPServerTransport } from "@modelcontextprotocol/node";
 import { isInitializeRequest } from "@modelcontextprotocol/server";
 import { SESSION_ID_HEADER } from "./constants.ts";
 import { ENV } from "./env.ts";
-import mcp from "./mcp.ts";
+import { createMcpServer } from "./mcp.ts";
 
 const connections = new Map<string, NodeStreamableHTTPServerTransport>();
 
@@ -58,6 +58,7 @@ server.all("/mcp", async (request, reply) => {
 			},
 		});
 
+		const mcp = createMcpServer();
 		await mcp.connect(connection);
 	}
 
