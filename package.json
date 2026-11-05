@@ -23,7 +23,7 @@
 	"type": "module",
 	"dependencies": {
 		"dotenv": "^18.0.3",
-		"mcp-server-ts": "^1.0.3",
+		"mcp-server-ts": "^1.0.4",
 		"openai": "^7.23.0"
 	},
 	"devDependencies": {
