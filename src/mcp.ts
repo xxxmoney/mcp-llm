@@ -20,9 +20,7 @@ app.registerTool({
 	handler: ({ value }, { log }) => {
 		log(`Received test message: '${value}'`);
 
-		return {
-			content: [{ type: "text", text: `Value: '${value}'` }],
-		};
+		return `Value: '${value}`;
 	},
 });
 
@@ -60,8 +58,6 @@ app.registerTool({
 
 		log(`Generated output: '${output}'`);
 
-		return {
-			content: [{ type: "text", text: output ?? "" }],
-		};
+		return output ?? "";
 	},
 });
