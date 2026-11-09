@@ -5,7 +5,7 @@ import { ENV } from "./env.js";
 
 export const app = new McpApp({
 	name: "My MCP App",
-	version: "1.0.0",
+	version: process.env.npm_package_version ?? "1.0.0",
 });
 
 // Test tool
