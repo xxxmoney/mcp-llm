@@ -1,11 +1,12 @@
 import { McpApp } from "mcp-server-ts";
 import OpenAI from "openai";
 import { z } from "zod";
+import { version } from "../package.json";
 import { ENV } from "./env.js";
 
 export const app = new McpApp({
 	name: "My MCP App",
-	version: process.env.npm_package_version ?? "1.0.0",
+	version: version,
 });
 
 // Test tool
