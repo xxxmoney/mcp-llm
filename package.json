@@ -1,6 +1,6 @@
 {
 	"name": "mcp-llm",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "MCP server for communication with LLM through OpenAI API standard",
 	"main": "index.js",
 	"scripts": {
@@ -22,15 +22,9 @@
 	"license": "ISC",
 	"type": "module",
 	"dependencies": {
-		"@fastify/cors": "^11.3.0",
-		"@fastify/type-provider-zod": "^1.0.0",
-		"@modelcontextprotocol/fastify": "^2.0.0",
-		"@modelcontextprotocol/node": "^2.1.0",
-		"@modelcontextprotocol/server": "^2.0.0",
 		"dotenv": "^18.0.3",
-		"fastify": "^5.12.5",
-		"openai": "^7.23.0",
-		"zod": "^4.6.5"
+		"mcp-server-ts": "^1.0.4",
+		"openai": "^7.23.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.14",
