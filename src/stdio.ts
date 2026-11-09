@@ -1,3 +1,3 @@
 import { app } from "./mcp.js";
 
-await app.startHttpServer();
+await app.startStdioServer();
